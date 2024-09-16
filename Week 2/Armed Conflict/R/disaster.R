@@ -13,5 +13,5 @@ subset <- subset %>% mutate(
 
 
 
-subset_multiple_disaster <- subset %>%
+subset_grouped <- subset %>%
   group_by(Year,ISO) %>% summarize(drought = max(drought), earthquake = max(earthquake))
