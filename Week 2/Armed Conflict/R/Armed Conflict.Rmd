@@ -22,25 +22,18 @@ usethis::use_git_remote("origin", url = "https://github.com/luke1274/8010.git")
 
 
 
-#######Full workflow #######
-# Set your Git configuration
-usethis::use_git_config(user.name = "My Name", user.email = "myemail@email.com")
 
-# Initialize Git
+
+
+#######Full workflow #######
+usethis::use_git_config(user.name = "Luke", user.email = "lukeltb17@gmail.com")
 usethis::use_git()
 
-# Set GitHub as the remote
 usethis::use_git_remote("origin", url = "https://github.com/luke1274/8010.git")
-
-# Stage and commit files
-system("git add .")
-system('git commit -m "Initial commit"')
-
-# Push to GitHub (adjust branch name if necessary)
-system("git push -u origin master")
 
 ########
 
-usethis::use_github()
+
+
 
 ```
