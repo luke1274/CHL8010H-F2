@@ -6,8 +6,41 @@ date: "2024-09-16"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
- 
-```
+install.packages("usethis")
+library(usethis) 
+
+usethis::use_git_config(user.name = "My Name", user.email = "myemail@email.com")
+
+# to confirm, generate a git situation-report, your user name and email should appear under Git config (global)
+usethis::git_sitrep()
+
+usethis::use_git()
+
+
+usethis::use_git_remote("origin", url = "https://github.com/luke1274/8010.git")
+
+
+
+
+#######Full workflow #######
+# Set your Git configuration
+usethis::use_git_config(user.name = "My Name", user.email = "myemail@email.com")
+
+# Initialize Git
+usethis::use_git()
+
+# Set GitHub as the remote
+usethis::use_git_remote("origin", url = "https://github.com/luke1274/8010.git")
+
+# Stage and commit files
+system("git add .")
+system('git commit -m "Initial commit"')
+
+# Push to GitHub (adjust branch name if necessary)
+system("git push -u origin master")
+
+########
+
+usethis::use_github()
 
 ```
