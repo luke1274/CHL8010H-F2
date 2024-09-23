@@ -51,10 +51,10 @@ merged_data <- reduce(combined_data, full_join, by = c("Country.Name", "Year"))
 merged_data <-
   merged_data %>% rename(
     year = Year,
-    Maternal_Mortality_Rate = MatMor.x,
-    Infant_Mortality_Rate = MatMor.y,
-    NeoNatal_Mortality_Rate = MatMor.x.x,
-    Under5_Mortality_Rate = MatMor.y.y
+    Infant_Mortality_Rate = MatMor.x,
+    NeoNatal_Mortality_Rate = MatMor.y,
+    Under5_Mortality_Rate = MatMor.x.x,
+    Maternal_Mortality_Rate = MatMor.y.y
   )
 
 
