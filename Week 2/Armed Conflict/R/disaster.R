@@ -1,6 +1,6 @@
 library(dplyr)
 
-disaster_data <- read.csv("disaster.csv")
+disaster_data <- read.csv("Armed Conflict/original/disaster.csv")
 disaster_data_filtered <- disaster_data %>% filter(Year>= 2000 & Year <= 2019, Disaster.Type %in% c("Drought","Earthquake"))
 
 subset <- disaster_data_filtered %>% select(Year, ISO, Disaster.Type)
@@ -18,7 +18,7 @@ subset_grouped <- subset %>%
 
 
 #Week 3
-conflict_data <- read.csv("conflictdata.csv")
+conflict_data <- read.csv("Armed Conflict/original/conflictdata.csv")
 
 conflict_data_bin <- conflict_data
 conflict_data_bin <- subset(conflict_data_bin, select = -c(conflict_id)) #Get rid of conflict_id

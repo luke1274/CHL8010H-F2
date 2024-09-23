@@ -3,7 +3,7 @@ library(tidyr)
 library(purrr)
 library(countrycode)
 
-maternal_data <- read.csv("maternalmortality.csv")
+maternal_data <- read.csv("Maternal Mortality/original/maternalmortality.csv")
 maternal_data_filtered <- maternal_data %>% select(Country.Name, X2000:X2019) 
 
 reshaped_maternal_data <- maternal_data_filtered %>%
@@ -36,9 +36,9 @@ reshape_data <- function(x){
   return(reshaped_data)
 }
 
-infant_data <- read.csv("infantmortality.csv")
-neonatal_data <- read.csv("neonatalmortality.csv")
-under5_data <- read.csv("under5mortality.csv")
+infant_data <- read.csv("Maternal Mortality/original/infantmortality.csv")
+neonatal_data <- read.csv("Maternal Mortality/original/neonatalmortality.csv")
+under5_data <- read.csv("Maternal Mortality/original/under5mortality.csv")
 
 reshaped_infant_data <- reshape_data(infant_data)
 reshaped_neonatal_data <- reshape_data(neonatal_data)
