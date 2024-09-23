@@ -28,5 +28,6 @@ conflict_data_bin <- conflict_data_bin %>% group_by(year, ISO) %>%
     best = sum(best, na.rm = TRUE)
   ) %>% mutate(conflict = ifelse(best >= 25, 1, 0))
 
-
+# DONT RUN THIS AGAIN
+conflict_data_bin <- conflict_data_bin %>% mutate(year = year + 1)
 
