@@ -16,18 +16,12 @@ subset <- subset %>% mutate(
 subset_grouped <- subset %>%
   group_by(Year,ISO) %>% summarize(drought = max(drought), earthquake = max(earthquake))
 
+subset_grouped <- subset_grouped %>% rename(
+  year = Year)
+
 
 #Week 3
-conflict_data <- read.csv("Armed Conflict/original/conflictdata.csv")
 
-conflict_data_bin <- conflict_data
-conflict_data_bin <- subset(conflict_data_bin, select = -c(conflict_id)) #Get rid of conflict_id
-
-conflict_data_bin <- conflict_data_bin %>% group_by(year, ISO) %>% 
-  summarize(
-    best = sum(best, na.rm = TRUE)
-  ) %>% mutate(conflict = ifelse(best >= 25, 1, 0))
 
 # DONT RUN THIS AGAIN
-conflict_data_bin <- conflict_data_bin %>% mutate(year = year + 1)
 

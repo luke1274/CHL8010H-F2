@@ -49,7 +49,8 @@ combined_data <- list(reshaped_infant_data, reshaped_neonatal_data, reshaped_und
 
 merged_data <- reduce(combined_data, full_join, by = c("Country.Name", "Year"))
 merged_data <-
-  merged_data %>% rename(merged_data,
+  merged_data %>% rename(
+    year = Year,
     Maternal_Mortality_Rate = MatMor.x,
     Infant_Mortality_Rate = MatMor.y,
     NeoNatal_Mortality_Rate = MatMor.x.x,
