@@ -28,7 +28,7 @@ corrected_order <- c("country_name", "ISO", "region", "year", "gdp1000",
                    "earthquake")
 
 #Replacing every instance of N/A in "earthquake" and "drought" with 0
-finaldata <- finaldata %>%
+finaldata <- final_merged_data %>%
   mutate(earthquake = replace_na(earthquake, 0),
          drought = replace_na(drought, 0))
 #Remove every row with N/A country_name
@@ -40,10 +40,6 @@ finaldata_reordered <- finaldata %>%
   select(any_of(corrected_order), everything())
 names(finaldata_reordered)
 
-
 finaldata <- finaldata_reordered
-finaldata %>%
-  dplyr::filter(country_name == "Canada")
-
-names(finaldata)
+return(finaldata)
 
