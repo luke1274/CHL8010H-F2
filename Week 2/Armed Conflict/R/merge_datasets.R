@@ -27,6 +27,13 @@ corrected_order <- c("country_name", "ISO", "region", "year", "gdp1000",
                    "matmor", "infmor", "neomor", "un5mor", "drought", 
                    "earthquake")
 
+#Replacing every instance of N/A in "earthquake" and "drought" with 0
+finaldata <- finaldata %>%
+  mutate(earthquake = replace_na(earthquake, 0),
+         drought = replace_na(drought, 0))
+
+
+
 finaldata_reordered <- finaldata %>%
   select(any_of(corrected_order), everything())
 names(finaldata_reordered)
