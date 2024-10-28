@@ -1,3 +1,10 @@
+---
+title: "Week 8"
+format: html
+editor: visual
+---
+
+```{r}
 library(here)
 library(plm)
 
@@ -65,12 +72,12 @@ neomormod <- plm(update.formula(preds, NeoNatal_Mortality_Rate ~ .), index = c("
                  data = finaldata)
 
 summary(matmormod)
+```
 
+You can add options to executable code like this
 
-
-
-#Creating Tables
-
+```{r}
+#| echo: false
 library(textreg)
 
 # Create a list of your models
@@ -95,3 +102,6 @@ conflict_coef$Model <- rownames(conflict_coef)
 textreg(conflict_coef, 
         title = "Summary of 'Conflict' Coefficients Across Models",
         notes = "This table summarizes the effect of armed conflict on mortality rates.")
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
