@@ -54,11 +54,37 @@ mice.multi.out  <- mice(midata, seed = 100, m = 10, maxit = 20,
 plot(mice.multi.out)
 
 
+
+#Creating new models
 fit_models <- function(data) {
   list(
-    matmormod = lm(Maternal_Mortality_Rate ~ ., data = midata),
-    un5mormod = lm(Under5_Mortality_Rate ~ ., data = midata),
-    infmormod = lm(Infant_Mortality_Rate ~ ., data = midata),
-    neomormod = lm(NeoNatal_Mortality_Rate ~ ., data = midata)
+    matmormod = lm(Maternal_Mortality_Rate ~ ., data = data),
+    un5mormod = lm(Under5_Mortality_Rate ~ ., data = data),
+    infmormod = lm(Infant_Mortality_Rate ~ ., data = data),
+    neomormod = lm(NeoNatal_Mortality_Rate ~ ., data = data)
   )
 }
+
+imputed_models <- vector("list", length(mice.multi.out))
+
+for (i in seq_along(mice.multi.out)) {
+  imputed_models[[i]] <- fit_models(mice.multi.out[[i]])
+}
+
+pooled_results <- lapply(imputed_models, function(models) {
+  list(
+    matmormod = pool(models$matmormod),
+    un5mormod = pool(models$un5mormod),
+    infmormod = pool(models$infmormod),
+    neomormod = pool(models$neomormod)
+  )
+})
+
+combined_results <- do.call(rbind, lapply(pooled_results, function(res) {
+  rbind(
+    tidy(res$matmormod),
+    tidy(res$un5mormod),
+    tidy(res$infmormod),
+    tidy(res$neomormod)
+  )
+}))
