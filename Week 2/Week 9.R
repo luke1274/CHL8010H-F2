@@ -55,36 +55,57 @@ plot(mice.multi.out)
 
 
 
-#Creating new models
-fit_models <- function(data) {
-  list(
-    matmormod = lm(Maternal_Mortality_Rate ~ ., data = data),
-    un5mormod = lm(Under5_Mortality_Rate ~ ., data = data),
-    infmormod = lm(Infant_Mortality_Rate ~ ., data = data),
-    neomormod = lm(NeoNatal_Mortality_Rate ~ ., data = data)
-  )
-}
+### MI analysis
+fit.mi.matmor <- with(mice.multi.out, 
+                      lm(matmor ~ -1 + armconf1 + loggdp + OECD + pctpopdens + urban + 
+                           agedep + male_edu + temp + rainfall1000 + earthquake + drought + 
+                           as.factor(ISOnum) + as.factor(year)))
+fit.mi.infmor <- with(mice.multi.out, 
+                      lm(infmor ~ -1 + armconf1 + loggdp + OECD + pctpopdens + urban + 
+                           agedep + male_edu + temp + rainfall1000 + earthquake + drought + 
+                           as.factor(ISOnum) + as.factor(year)))
+fit.mi.neomor <- with(mice.multi.out, 
+                      lm(neomor ~ -1 + armconf1 + loggdp + OECD + pctpopdens + urban + 
+                           agedep + male_edu + temp + rainfall1000 + earthquake + drought + 
+                           as.factor(ISOnum) + as.factor(year)))
+fit.mi.un5mor <- with(mice.multi.out, 
+                      lm(un5mor ~ -1 + armconf1 + loggdp + OECD + pctpopdens + urban + 
+                           agedep + male_edu + temp + rainfall1000 + earthquake + drought + 
+                           as.factor(ISOnum) + as.factor(year)))
 
-imputed_models <- vector("list", length(mice.multi.out))
+out.matmor <- pool(fit.mi.matmor)
+out.infmor <- pool(fit.mi.infmor)
+out.neomor<- pool(fit.mi.neomor)
+out.un5mor <- pool(fit.mi.un5mor)
 
-for (i in seq_along(mice.multi.out)) {
-  imputed_models[[i]] <- fit_models(mice.multi.out[[i]])
-}
+### CC analysis
 
-pooled_results <- lapply(imputed_models, function(models) {
-  list(
-    matmormod = pool(models$matmormod),
-    un5mormod = pool(models$un5mormod),
-    infmormod = pool(models$infmormod),
-    neomormod = pool(models$neomormod)
-  )
-})
+preds <- as.formula(" ~ -1 + armconf1 + loggdp + OECD + pctpopdens + urban + 
+                  agedep + male_edu + temp + rainfall1000 + earthquake + drought + 
+                  as.factor(ISO) + as.factor(year)")
 
-combined_results <- do.call(rbind, lapply(pooled_results, function(res) {
-  rbind(
-    tidy(res$matmormod),
-    tidy(res$un5mormod),
-    tidy(res$infmormod),
-    tidy(res$neomormod)
-  )
-}))
+matmormod <- lm(update.formula(preds, matmor ~ .), data = finaldata)
+un5mormod <- lm(update.formula(preds, un5mor ~ .), data = finaldata)
+infmormod <- lm(update.formula(preds, infmor ~ .), data = finaldata)
+neomormod <- lm(update.formula(preds, neomor ~ .), data = finaldata)
+
+tosave <- list(out.matmor, out.infmor, out.neomor, out.un5mor, 
+               matmormod, un5mormod, infmormod, neomormod)
+
+keepvars <- list("armconf1" = "Armed conflict",
+                 "loggdp" = "log(GDP)",
+                 "OECD" = "OECD",
+                 "pctpopdens" = "Population density",
+                 "urban" = "Urban",
+                 "agedep" = "Age dependency",
+                 "male_edu" = "Male education",
+                 "temp" = "Average temperature",
+                 "rainfall" = "Average rainfall",
+                 "earthquake" = "Earthquake",
+                 "drought" = "Drought")
+screenreg(list(matmormod, out.matmor, un5mormod, out.un5mor, infmormod, out.infmor, neomormod, out.neomor), 
+          ci.force = TRUE,
+          custom.coef.map = keepvars,
+          custom.model.names = c("Mat CC", "Mat MI", "Un5 CC", "Un5 MI", "Inf CC", "Inf MI", "Neo CC", "Neo MI"))
+
+save(tosave, file = here("output", "mi_output.Rdata"))
